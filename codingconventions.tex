@@ -1,0 +1,211 @@
+\documentclass[11pt]{article}
+\usepackage{listings}
+\usepackage{color}
+\usepackage{xcolor}
+\usepackage{fullpage}
+\usepackage[T1]{fontenc}
+\newcommand{\changefont}[3]{
+\fontfamily{#1} \fontseries{#2} \fontshape{#3} \selectfont}
+
+\definecolor{mylightgray}{rgb}{0.9,0.9,0.9}
+\definecolor{mygreen}{rgb}{0,0.6,0}
+\definecolor{mygray}{rgb}{0.5,0.5,0.5}
+\definecolor{mymauve}{rgb}{0.58,0,0.82}
+
+\lstdefinestyle{sharpc}{
+backgroundcolor=\color{mylightgray},
+language=[Sharp]C,
+basicstyle=\footnotesize\ttfamily,
+frame=single,
+frameround=tttt,
+keywordstyle=\color{blue},
+stringstyle=\color{mymauve},
+commentstyle=\color{mygreen},
+tabsize=2,
+}
+
+\title{C\# Coding Convetions}
+\author{Christian Lohr}
+\begin{document}
+\changefont{cmss}{m}{n}
+\maketitle
+\lstset{style=sharpc}
+\section{Naming Conventions}
+\begin{itemize}
+  \item In short examples that do not include using directives, use namespace qualifications. If you know that a namespace is imported by default in a project, you do not have to fully qualify the names from that namespace. Qualified names can be broken after a dot (.) if they are too long for a single line, as shown in the following example.
+  \item You do not have to change the names of objects that were created by using the Visual Studio designer tools to make them fit other guidelines.
+\end{itemize}
+\lstinputlisting{sources/naming.cs}
+\section{Layout Conventions}
+\begin{itemize}
+  \item Use the default Code Editor settings (smart indenting, four-character indents, tabs saved as spaces).
+  \item Write only one statement per line.
+  \item Write only one declaration per line.
+  \item If continuation lines are not indented automatically, indent them one tab stop (four spaces).
+  \item Add at least one blank line between method definitions and property definitions.
+  \item Use parentheses to make clauses in an expression apparent, as shown in the following code.
+\end{itemize}
+\lstinputlisting{sources/layout.cs}
+\section{Commenting Conventions}
+\begin{itemize}
+  \item Place the comment on a separate line, not at the end of a line of code.
+  \item Begin comment text with an uppercase letter.
+  \item End comment text with a period.
+  \item Do not create formatted blocks of asterisks around comments.
+  \item Insert one space between the comment delimiter (//) and the comment text, as shown in the following example.
+\end{itemize}
+\lstinputlisting{sources/comment.cs}
+\section{Language Guidelines}
+\subsection{String Data Type}
+\begin{itemize}
+  \item Use the + operator to concatenate short strings, as shown in the following code.
+\end{itemize}
+\lstinputlisting{sources/plusop.cs}
+\begin{itemize}
+  \item To append strings in loops, especially when you are working with large amounts of text, use a StringBuilder object.
+\end{itemize}
+\lstinputlisting{sources/concat.cs}
+\subsection{Implicitly Typed Local Variables}
+\begin{itemize}
+  \item Use implicit typing for local variables when the type of the variable is obvious from the right side of the assignment, or when the precise type is not important.
+\end{itemize}
+\lstinputlisting{sources/implicit.cs}
+\begin{itemize}
+  \item Do not use var when the type is not apparent from the right side of the assignment.
+\end{itemize}
+\lstinputlisting{sources/explicit.cs}
+\begin{itemize}
+  \item Do not use var when the type is not apparent from the right side of the assignment.
+\end{itemize}
+\lstinputlisting{sources/notrust.cs}
+\begin{itemize}
+  \item Avoid the use of var in place of dynamic.
+  \item Use implicit typing to determine the type of the loop variable in for and foreach loops.
+\end{itemize}
+The following example uses implicit typing in a for statement.
+\lstinputlisting{sources/for.cs}
+The following example uses implicit typing in a foreach statement.
+\lstinputlisting{sources/foreach.cs}
+\subsection{Unsigned Data Type}
+\begin{itemize}
+	\item In general, use int rather than unsigned types. The use of int is common throughout C\#, and it is easier to interact with other libraries when you use int.
+\end{itemize}
+\subsection{Arrays}
+\begin{itemize}
+	\item Use the concise syntax when you initialize arrays on the declaration line.
+\end{itemize}
+\lstinputlisting{sources/concise.cs}
+\subsection{Delegates} % (fold)
+\label{sub:delegates}
+\begin{itemize}
+	\item Use the concise syntax to create instances of a delegate type.
+\end{itemize}
+\lstinputlisting{sources/delegate.cs}
+\lstinputlisting{sources/delegateb.cs}
+% subsection delegates (end)
+\subsection{try-catch and using Statements in Exception Handling} % (fold)
+\label{sub:try_catch_and_using_statements_in_exception_handling}
+\begin{itemize}
+	\item Use a try-catch statement for most exception handling.
+\end{itemize}
+\lstinputlisting{sources/trycatch.cs}
+\begin{itemize}
+	\item Simplify your code by using the C\# using statement. If you have a try-finally statement in which the only code in the finally block is a call to the Dispose method, use a using statement instead.
+\end{itemize}
+\lstinputlisting{sources/trycatch2.cs}
+% subsection try_catch_and_using_statements_in_exception_handling (end)
+\subsection{\&\& and || Operators} % (fold)
+\begin{itemize}
+	\item To avoid exceptions and increase performance by skipping unnecessary comparisons, use \&\& instead of \& and || instead of | when you perform comparisons, as shown in the following example.
+\end{itemize}
+\lstinputlisting{sources/andor.cs}
+% subsection &&_and_||_operators (end)
+\subsection{New Operator} % (fold)
+\label{sub:new_operator}
+\begin{itemize}
+	\item Use the concise form of object instantiation, with implicit typing, as shown in the following declaration.
+\end{itemize}
+\begin{lstlisting}
+var instance1 = new ExampleClass();
+\end{lstlisting}
+The previous line is equivalent to the following declaration.
+\begin{lstlisting}
+ExampleClass instance2 = new ExampleClass();
+\end{lstlisting}
+\begin{itemize}
+	\item Use object initializers to simplify object creation.
+\end{itemize}
+\lstinputlisting{sources/new.cs}
+% subsection new_operator (end)
+\subsection{Event Handling} % (fold)
+\label{sub:event_handling}
+\begin{itemize}
+	\item If you are defining an event handler that you do not need to remove later, use a lambda expression.
+\end{itemize}
+\lstinputlisting{sources/event.cs}
+\lstinputlisting{sources/eventb.cs}
+% subsection event_handling (end)
+\subsection{Static Members} % (fold)
+\label{sub:static_members}
+\begin{itemize}
+	\item Call static members by using the class name: ClassName.StaticMember. Do not access a static member that is defined in a base class from a derived class.
+\end{itemize}
+% subsection static_members (end)
+\subsection{LINQ Queries} % (fold)
+\label{sub:linq_queries}
+\begin{itemize}
+	\item Use meaningful names for query variables. The following example uses seattleCustomers for customers who are located in Seattle.
+\end{itemize}
+\begin{lstlisting}
+var seattleCustomers = from cust in customers
+                       where cust.City == "Seattle" 
+                       select cust.Name;
+\end{lstlisting}
+\begin{itemize}
+	\item Use aliases to make sure that property names of anonymous types are correctly capitalized, using Pascal casing.
+\end{itemize}
+\begin{lstlisting}
+var localDistributors =
+    from customer in customers
+    join distributor in distributors on customer.City equals distributor.City
+    select new { Customer = customer, Distributor = distributor };
+\end{lstlisting}
+\begin{itemize}
+	\item Rename properties when the property names in the result would be ambiguous. For example, if your query returns a customer name and a distributor ID, instead of leaving them as Name and ID in the result, rename them to clarify that Name is the name of a customer, and ID is the ID of a distributor.
+\end{itemize}
+\begin{lstlisting}
+var localDistributors2 =
+    from cust in customers
+    join dist in distributors on cust.City equals dist.City
+    select new { CustomerName = cust.Name, DistributorID = dist.ID };
+\end{lstlisting}
+\begin{itemize}
+	\item Use implicit typing in the declaration of query variables and range variables.
+\end{itemize}
+\begin{lstlisting}
+var seattleCustomers = from cust in customers
+                       where cust.City == "Seattle" 
+                       select cust.Name;
+\end{lstlisting}
+\begin{itemize}
+	\item Align query clauses under the from clause, as shown in the previous examples.
+	\item Use where clauses before other query clauses to ensure that later query clauses operate on the reduced, filtered set of data.
+\end{itemize}
+\begin{lstlisting}
+var seattleCustomers2 = from cust in customers
+                        where cust.City == "Seattle" 
+                        orderby cust.Name
+                        select cust;
+\end{lstlisting}
+\begin{itemize}
+	\item Use multiple from clauses instead of a join clause to access inner collections. For example, a collection of Student objects might each contain a collection of test scores. When the following query is executed, it returns each score that is over 90, along with the last name of the student who received the score.
+\end{itemize}
+\begin{lstlisting}
+// Use a compound from to access the inner sequence within each element. 
+var scoreQuery = from student in students
+                 from score in student.Scores
+                 where score > 90
+                 select new { Last = student.LastName, score };
+\end{lstlisting}
+% subsection lnq_queries (end)
+\end{document}
